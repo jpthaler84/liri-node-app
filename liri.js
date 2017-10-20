@@ -1,73 +1,78 @@
-var input = 
+// Keys/Global Variables
+var keys = require("./keys");
+var input = process.argv[2];
+var userInput = "";
+
+
 
 // ***TWITTER***
 var Twitter = require('twitter');
-// Create variable for access keys using import/export
- 
 var client = new Twitter(keys.twitterKeys);
- 
-var params = {screen_name: 'Ghostmeat3'};
+
+var params = { screen_name: 'Ghostmeat3' };
 client.get('statuses/user_timeline', params, function(error, tweets, response) {
-  if (!error) {
-    console.log(error);
-    return;
-  };
-
-
+    if (!error) {
+        console.log(error);
+        return;
+    };
 });
 
+
+
+// ***TW33T H4XX***
+var latestTweets = require('latest-tweets')
+
+latestTweets('Ghostmeat3', function(err, tweets) {
+    console.log(tweets)
+});
+
+
+
 // ***SPOTIFY***
-var Spotify = require('node-spotify-api');
- 
-var spotify = new Spotify(keys.spotifyKeys);
+// var Spotify = require('node-spotify-api');
+
+// var spotify = new Spotify(keys.spotifyKeys);
+
+// spotify.search({
+//         type: 'track',
+//         query: input
+//     }).then(function(response) {
+//         console.log(response);
+//     })
+//     .catch(function(err) {
+//         console.log(err);
+//     });
 
 
- 
-spotify
-  .search({ type: 'track', query: input })
-  .then(function(response) {
-    console.log(response);
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
 
-  // ***OMDB***
-  var omdb = require('omdb');
- 
-omdb.search('saw', function(err, movies) {
-    if(err) {
+// ***OMDB***
+var omdb = require('omdb');
+
+omdb.search(input, function(err, movies) {
+    if (err) {
         return console.error(err);
     }
- 
-    if(movies.length < 1) {
+
+    if (movies.length < 1) {
         return console.log('No movies were found!');
     }
- 
+
     movies.forEach(function(movie) {
         console.log('%s (%d)', movie.title, movie.year);
     });
- 
-    // Saw (2004) 
-    // Saw II (2005) 
-    // Saw III (2006) 
-    // Saw IV (2007) 
-    // ... 
+
 });
- 
-omdb.get({ title: 'Saw', year: 2004 }, true, function(err, movie) {
-    if(err) {
+
+omdb.get({ title: input }, true, function(err, movie) {
+    if (err) {
         return console.error(err);
     }
- 
-    if(!movie) {
+
+    if (!movie) {
         return console.log('Movie not found!');
     }
- 
+
     console.log('%s (%d) %d/10', movie.title, movie.year, movie.imdb.rating);
     console.log(movie.plot);
- 
-    // Saw (2004) 7.6/10 
-    // Two men wake up at opposite sides of a dirty, disused bathroom, chained 
-    // by their ankles to pipes. Between them lies... 
+
 });
